@@ -1,0 +1,14 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Velo Shell
+GenericName=Status Bar
+Comment=Hyprland status bar with the Velo cockpit aesthetic
+Exec=velo-shell
+Icon=velo-shell
+Terminal=false
+Categories=Utility;
+StartupNotify=false
+StartupWMClass=com.velo.Shell
+Keywords=bar;waybar;status;panel;taskbar;
+NoDisplay=true

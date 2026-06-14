@@ -1,0 +1,290 @@
+/* Velo Shell — Lexus Cockpit / Hyprland Glass */
+
+/* ── Adwaita tokens (matches Velo Browser / Player / Files / Launcher) ──── */
+@define-color accent_color          #8ab4d4;
+@define-color accent_bg_color       #4d8fb8;
+@define-color accent_fg_color       #ffffff;
+@define-color window_bg_color       #09090c;
+@define-color view_bg_color         #06060a;
+
+/* ── Window — fully transparent so only the bar panel shows ─────────────── */
+window,
+window.background {
+    background-color: transparent;
+}
+
+/* ── Bar — cockpit console strip along the top edge ──────────────────────── */
+.bar {
+    min-height: 34px;
+    padding: 0 14px;
+    background-color: rgba(7, 8, 13, 0.86);
+    background-image: linear-gradient(90deg,
+        rgba(138, 180, 212, 0) 0%,
+        rgba(138, 180, 212, 0.40) 50%,
+        rgba(138, 180, 212, 0) 100%);
+    background-repeat: no-repeat;
+    background-size: 100% 1px;
+    background-position: bottom center;
+    border-bottom: 1px solid rgba(195, 215, 238, 0.07);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.05),
+        0 1px 12px rgba(138, 180, 212, 0.06),
+        0 1px 0 rgba(0, 0, 0, 0.4);
+}
+
+.bar-section {
+    margin: 0 2px;
+}
+
+/* ── Generic module pill ─────────────────────────────────────────────────── */
+.module {
+    padding: 4px 10px;
+    border-radius: 8px;
+    transition: background-color 140ms ease, color 140ms ease;
+}
+.module:hover {
+    background-color: rgba(195, 215, 240, 0.06);
+}
+
+.module-icon {
+    color: rgba(165, 190, 218, 0.55);
+}
+.module-value {
+    font-size: 12px;
+    color: rgba(222, 234, 252, 0.82);
+    font-variant-numeric: tabular-nums;
+}
+
+/* ── Buttons — flat, accent-tinted on hover (shared with the suite) ─────── */
+button.flat {
+    border-radius: 8px;
+    color: rgba(196, 216, 240, 0.50);
+    transition: background-color 140ms ease, color 140ms ease;
+}
+button.flat:hover {
+    background-color: rgba(138, 180, 212, 0.12);
+    color: rgba(228, 242, 255, 0.92);
+}
+button.flat:active {
+    background-color: rgba(138, 180, 212, 0.20);
+    color: #ffffff;
+}
+
+/* ── Workspaces ───────────────────────────────────────────────────────────── */
+.workspaces {
+    padding: 0 2px;
+}
+
+button.workspace-pill {
+    min-width: 22px;
+    min-height: 22px;
+    padding: 0 2px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(165, 190, 218, 0.30);
+    transition: background-color 140ms ease, color 140ms ease, box-shadow 140ms ease;
+}
+button.workspace-pill:hover {
+    background-color: rgba(195, 215, 240, 0.08);
+    color: rgba(228, 242, 255, 0.85);
+}
+button.workspace-pill.occupied {
+    color: rgba(222, 234, 252, 0.65);
+}
+button.workspace-pill.active {
+    background-color: rgba(138, 180, 212, 0.20);
+    color: #ffffff;
+    box-shadow:
+        inset 0 0 0 1px rgba(138, 180, 212, 0.35),
+        0 0 12px rgba(138, 180, 212, 0.18);
+}
+
+/* ── Active window title ─────────────────────────────────────────────────── */
+label.window-title {
+    font-size: 12.5px;
+    font-weight: 450;
+    color: rgba(196, 216, 240, 0.46);
+}
+
+/* ── Clock ────────────────────────────────────────────────────────────────── */
+button.clock-module {
+    padding: 4px 14px;
+}
+label.clock-time {
+    font-size: 13.5px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: rgba(232, 240, 252, 0.94);
+    font-variant-numeric: tabular-nums;
+}
+label.clock-date {
+    font-size: 11.5px;
+    color: rgba(165, 190, 218, 0.45);
+}
+
+/* ── CPU / RAM ────────────────────────────────────────────────────────────── */
+label.stat-name {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: rgba(150, 175, 205, 0.36);
+}
+label.stat-value {
+    font-size: 12px;
+    font-weight: 500;
+    min-width: 28px;
+    color: rgba(222, 234, 252, 0.82);
+    font-variant-numeric: tabular-nums;
+}
+
+/* ── Battery — accent flips to a warm red when low ───────────────────────── */
+.battery-module.battery-low .module-icon,
+.battery-module.battery-low .module-value {
+    color: rgba(224, 110, 110, 0.85);
+}
+
+/* ── Power button ────────────────────────────────────────────────────────── */
+button.power-button {
+    padding: 4px 8px;
+    color: rgba(196, 216, 240, 0.50);
+}
+button.power-button:hover {
+    background-color: rgba(224, 110, 110, 0.14);
+    color: rgba(240, 135, 135, 0.85);
+}
+
+/* ── Popovers — floating glass panels ────────────────────────────────────── */
+popover.velo-popover {
+    background: transparent;
+}
+popover.velo-popover > arrow {
+    background: none;
+    box-shadow: none;
+}
+popover.velo-popover > contents {
+    margin-top: 6px;
+    padding: 8px;
+    background-color: rgba(10, 11, 17, 0.97);
+    border: 1px solid rgba(195, 215, 240, 0.10);
+    border-radius: 12px;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.04),
+        0 12px 40px rgba(0, 0, 0, 0.55),
+        0 0 18px rgba(138, 180, 212, 0.08);
+}
+
+.panel-title {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 3.5px;
+    color: rgba(185, 210, 235, 0.36);
+}
+
+/* ── Volume popover slider ───────────────────────────────────────────────── */
+.volume-popover-box {
+    padding: 4px 6px;
+    min-width: 180px;
+}
+scale.volume-scale trough {
+    min-height: 4px;
+    border-radius: 2px;
+    background-color: rgba(195, 215, 240, 0.10);
+}
+scale.volume-scale highlight {
+    border-radius: 2px;
+    background-color: rgba(138, 180, 212, 0.45);
+}
+scale.volume-scale slider {
+    min-width: 10px;
+    min-height: 10px;
+    margin: -4px;
+    border-radius: 50%;
+    background-color: rgba(225, 235, 250, 0.85);
+}
+
+/* ── Calendar popover ─────────────────────────────────────────────────────── */
+calendar.velo-calendar {
+    background-color: transparent;
+    color: rgba(222, 234, 252, 0.85);
+    padding: 4px;
+}
+calendar.velo-calendar > header {
+    background: transparent;
+    border-bottom: 1px solid rgba(195, 215, 240, 0.07);
+    padding-bottom: 4px;
+    margin-bottom: 4px;
+}
+calendar.velo-calendar > header > button {
+    color: rgba(196, 216, 240, 0.55);
+    border-radius: 6px;
+}
+calendar.velo-calendar > header > button:hover {
+    background-color: rgba(138, 180, 212, 0.12);
+    color: #ffffff;
+}
+calendar.velo-calendar label.day-number {
+    border-radius: 6px;
+    padding: 2px;
+    color: rgba(222, 234, 252, 0.75);
+}
+calendar.velo-calendar label.day-number.other-month {
+    color: rgba(165, 190, 218, 0.20);
+}
+calendar.velo-calendar label.day-number.today {
+    color: @accent_color;
+    font-weight: 700;
+}
+calendar.velo-calendar label.day-number:selected {
+    background-color: rgba(138, 180, 212, 0.30);
+    color: #ffffff;
+}
+
+/* ── Power menu ───────────────────────────────────────────────────────────── */
+.power-menu-list {
+    background-color: transparent;
+    min-width: 150px;
+}
+.power-menu-list > row {
+    border-radius: 8px;
+    transition: background-color 100ms ease;
+}
+.power-menu-list > row:hover {
+    background-color: rgba(195, 215, 240, 0.07);
+}
+.power-menu-list > row.danger:hover {
+    background-color: rgba(220, 75, 75, 0.14);
+}
+.power-menu-row {
+    padding: 6px 12px;
+}
+.power-menu-icon {
+    color: rgba(196, 216, 240, 0.65);
+}
+.power-menu-title {
+    font-size: 12.5px;
+    font-weight: 450;
+    color: rgba(228, 238, 252, 0.88);
+}
+.power-menu-list > row:hover .power-menu-icon,
+.power-menu-list > row:hover .power-menu-title {
+    color: #ffffff;
+}
+.power-menu-list > row.danger:hover .power-menu-icon,
+.power-menu-list > row.danger:hover .power-menu-title {
+    color: rgba(240, 135, 135, 0.90);
+}
+
+/* ── Scrollbars — accent-tinted to match the cockpit palette ────────────── */
+scrollbar slider {
+    background-color: rgba(138, 180, 212, 0.18);
+    border-radius: 8px;
+    min-width: 6px;
+    min-height: 6px;
+}
+scrollbar slider:hover {
+    background-color: rgba(138, 180, 212, 0.32);
+}
+scrollbar slider:active {
+    background-color: rgba(138, 180, 212, 0.48);
+}
