@@ -2,7 +2,7 @@ use gtk4::gdk;
 use gtk4::prelude::*;
 use gtk4_layer_shell::{Edge, Layer, LayerShell};
 
-use crate::modules::{battery, clock, network, power, system, volume, workspaces};
+use crate::modules::{battery, bluetooth, clock, media, network, power, system, volume, workspaces};
 
 pub fn build_window(app: &gtk4::Application) -> gtk4::ApplicationWindow {
     load_css();
@@ -26,10 +26,12 @@ pub fn build_window(app: &gtk4::Application) -> gtk4::ApplicationWindow {
     let center = gtk4::Box::builder().orientation(gtk4::Orientation::Horizontal).halign(gtk4::Align::Center).css_classes(vec!["bar-section"]).build();
     center.append(&clock::build());
 
-    // ── Right: system stats, network, volume, battery, power ──
+    // ── Right: system stats, network, bluetooth, media, volume, battery, power ──
     let right = gtk4::Box::builder().orientation(gtk4::Orientation::Horizontal).spacing(10).halign(gtk4::Align::End).css_classes(vec!["bar-section"]).build();
     right.append(&system::build());
     right.append(&network::build());
+    right.append(&bluetooth::build());
+    right.append(&media::build());
     right.append(&volume::build());
     right.append(&battery::build());
     right.append(&power::build());

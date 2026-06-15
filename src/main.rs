@@ -1,5 +1,6 @@
 use gtk4::prelude::*;
 
+mod card;
 mod hypr;
 mod modules;
 mod window;

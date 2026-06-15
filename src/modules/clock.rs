@@ -1,6 +1,8 @@
-//! Clock module: time + date, with a calendar popover on click.
+//! Clock module: time + date, with a calendar card on click.
 
 use gtk4::prelude::*;
+
+use crate::card;
 
 pub fn build() -> gtk4::Widget {
     let time_label = gtk4::Label::builder().css_classes(vec!["clock-time"]).build();
@@ -14,15 +16,13 @@ pub fn build() -> gtk4::Widget {
     button.set_child(Some(&row));
 
     let calendar = gtk4::Calendar::builder().css_classes(vec!["velo-calendar"]).build();
-
-    let popover = gtk4::Popover::builder().css_classes(vec!["velo-popover"]).autohide(true).position(gtk4::PositionType::Bottom).build();
-    popover.set_child(Some(&calendar));
-    popover.set_parent(&button);
+    let card_window = card::build(&calendar);
 
     button.connect_clicked(move |_| {
-        let today = glib::DateTime::now_local().unwrap();
-        calendar.select_day(&today);
-        popover.popup();
+        card::toggle(&card_window, || {
+            let today = glib::DateTime::now_local().unwrap();
+            calendar.select_day(&today);
+        });
     });
 
     update(&time_label, &date_label);

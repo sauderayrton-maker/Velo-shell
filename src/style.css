@@ -15,8 +15,8 @@ window.background {
 
 /* ── Bar — cockpit console strip along the top edge ──────────────────────── */
 .bar {
-    min-height: 34px;
-    padding: 0 14px;
+    min-height: 40px;
+    padding: 0 18px;
     background-color: rgba(7, 8, 13, 0.86);
     background-image: linear-gradient(90deg,
         rgba(138, 180, 212, 0) 0%,
@@ -38,8 +38,8 @@ window.background {
 
 /* ── Generic module pill ─────────────────────────────────────────────────── */
 .module {
-    padding: 4px 10px;
-    border-radius: 8px;
+    padding: 6px 12px;
+    border-radius: 9px;
     transition: background-color 140ms ease, color 140ms ease;
 }
 .module:hover {
@@ -50,7 +50,7 @@ window.background {
     color: rgba(165, 190, 218, 0.55);
 }
 .module-value {
-    font-size: 12px;
+    font-size: 13px;
     color: rgba(222, 234, 252, 0.82);
     font-variant-numeric: tabular-nums;
 }
@@ -76,11 +76,11 @@ button.flat:active {
 }
 
 button.workspace-pill {
-    min-width: 22px;
-    min-height: 22px;
+    min-width: 26px;
+    min-height: 26px;
     padding: 0 2px;
-    border-radius: 6px;
-    font-size: 11px;
+    border-radius: 7px;
+    font-size: 12px;
     font-weight: 600;
     color: rgba(165, 190, 218, 0.30);
     transition: background-color 140ms ease, color 140ms ease, box-shadow 140ms ease;
@@ -102,24 +102,24 @@ button.workspace-pill.active {
 
 /* ── Active window title ─────────────────────────────────────────────────── */
 label.window-title {
-    font-size: 12.5px;
+    font-size: 13px;
     font-weight: 450;
     color: rgba(196, 216, 240, 0.46);
 }
 
 /* ── Clock ────────────────────────────────────────────────────────────────── */
 button.clock-module {
-    padding: 4px 14px;
+    padding: 6px 16px;
 }
 label.clock-time {
-    font-size: 13.5px;
+    font-size: 15px;
     font-weight: 600;
     letter-spacing: 0.5px;
     color: rgba(232, 240, 252, 0.94);
     font-variant-numeric: tabular-nums;
 }
 label.clock-date {
-    font-size: 11.5px;
+    font-size: 12.5px;
     color: rgba(165, 190, 218, 0.45);
 }
 
@@ -131,9 +131,9 @@ label.stat-name {
     color: rgba(150, 175, 205, 0.36);
 }
 label.stat-value {
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 500;
-    min-width: 28px;
+    min-width: 30px;
     color: rgba(222, 234, 252, 0.82);
     font-variant-numeric: tabular-nums;
 }
@@ -179,6 +179,121 @@ popover.velo-popover > contents {
     font-weight: 600;
     letter-spacing: 3.5px;
     color: rgba(185, 210, 235, 0.36);
+}
+
+/* ── Cards — generic popover content (network, bluetooth, sound, media) ─── */
+.card {
+    padding: 6px 4px;
+    min-width: 230px;
+}
+
+.card-section-title {
+    margin-top: 4px;
+}
+
+.card-subtitle {
+    font-size: 12px;
+    color: rgba(196, 216, 240, 0.46);
+}
+
+.card-icon-button {
+    padding: 6px;
+    border-radius: 8px;
+}
+
+/* Switches — Wi-Fi / Bluetooth power toggles */
+switch {
+    min-width: 36px;
+    min-height: 20px;
+    border-radius: 999px;
+    background-color: rgba(195, 215, 240, 0.10);
+    border: 1px solid rgba(195, 215, 240, 0.10);
+    transition: background-color 140ms ease;
+}
+switch:checked {
+    background-color: rgba(138, 180, 212, 0.45);
+}
+switch slider {
+    min-width: 16px;
+    min-height: 16px;
+    margin: 1px;
+    border-radius: 999px;
+    background-color: rgba(225, 235, 250, 0.85);
+}
+switch:checked slider {
+    background-color: #ffffff;
+}
+
+/* Scrollable lists — Wi-Fi networks, Bluetooth devices, audio outputs */
+.card-list {
+    background-color: transparent;
+}
+.card-list > row {
+    border-radius: 8px;
+    transition: background-color 100ms ease;
+}
+.card-list > row:hover {
+    background-color: rgba(195, 215, 240, 0.07);
+}
+.card-list > row.active {
+    background-color: rgba(138, 180, 212, 0.14);
+}
+.card-list-content {
+    padding: 6px 8px;
+}
+.card-list-icon {
+    color: rgba(196, 216, 240, 0.55);
+}
+.card-list-title {
+    font-size: 12.5px;
+    font-weight: 450;
+    color: rgba(228, 238, 252, 0.85);
+}
+.card-list > row.active .card-list-title {
+    color: #ffffff;
+}
+.card-list-check {
+    color: @accent_color;
+}
+
+/* ── Media card ───────────────────────────────────────────────────────────── */
+.media-track-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(232, 240, 252, 0.92);
+    margin-top: 2px;
+}
+.media-track-artist {
+    font-size: 12px;
+    color: rgba(165, 190, 218, 0.50);
+}
+.media-controls {
+    margin-top: 6px;
+}
+button.media-btn {
+    padding: 8px;
+    border-radius: 999px;
+}
+
+/* ── Battery card ─────────────────────────────────────────────────────────── */
+.battery-card-icon {
+    color: rgba(165, 190, 218, 0.65);
+}
+.battery-card-percent {
+    font-size: 22px;
+    font-weight: 700;
+    color: rgba(232, 240, 252, 0.94);
+    font-variant-numeric: tabular-nums;
+}
+.battery-card-status {
+    font-size: 12px;
+    color: rgba(165, 190, 218, 0.50);
+}
+.battery-card-time {
+    font-size: 12px;
+    color: rgba(196, 216, 240, 0.46);
+    padding-top: 6px;
+    border-top: 1px solid rgba(195, 215, 240, 0.07);
 }
 
 /* ── Volume popover slider ───────────────────────────────────────────────── */

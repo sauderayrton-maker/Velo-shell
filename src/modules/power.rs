@@ -5,6 +5,7 @@ use std::process::Command;
 
 use gtk4::prelude::*;
 
+use crate::card;
 use crate::hypr;
 
 enum Action {
@@ -32,21 +33,19 @@ pub fn build() -> gtk4::Button {
         list.append(&build_row(icon, title, *danger));
     }
 
-    let popover = gtk4::Popover::builder().css_classes(vec!["velo-popover"]).autohide(true).position(gtk4::PositionType::Bottom).build();
-    popover.set_child(Some(&list));
-    popover.set_parent(&button);
+    let card_window = card::build(&list);
 
     list.connect_row_activated({
-        let popover = popover.clone();
+        let card_window = card_window.clone();
         move |_, row| {
-            popover.popdown();
+            card_window.set_visible(false);
             if let Some((_, _, _, action)) = ACTIONS.get(row.index() as usize) {
                 run(action);
             }
         }
     });
 
-    button.connect_clicked(move |_| popover.popup());
+    button.connect_clicked(move |_| card::toggle(&card_window, || {}));
 
     button
 }
