@@ -13,6 +13,12 @@ window.background {
     background-color: transparent;
 }
 
+/* ── Spacer — invisible full-width zone holder, not rendered ─────────────── */
+.bar-spacer {
+    min-height: 38px;
+    background-color: transparent;
+}
+
 /* ── Floating pill — each section is its own rounded surface ─────────────── */
 .bar-pill {
     min-height: 38px;

@@ -6,9 +6,28 @@ use crate::modules::{battery, bluetooth, clock, media, network, power, system, v
 
 pub fn build_windows(app: &gtk4::Application) {
     load_css();
+    build_spacer(app).present();
     build_left(app).present();
     build_center(app).present();
     build_right(app).present();
+}
+
+/// Invisible full-width window whose only job is to hold the exclusive zone
+/// so niri keeps all tiled windows below the pill strip.
+fn build_spacer(app: &gtk4::Application) -> gtk4::ApplicationWindow {
+    let window = shell_window(app);
+    window.set_layer(Layer::Bottom);
+    window.set_anchor(Edge::Left, true);
+    window.set_anchor(Edge::Right, true);
+    window.set_anchor(Edge::Top, true);
+    window.set_margin(Edge::Top, 8);
+    window.auto_exclusive_zone_enable();
+
+    let spacer = gtk4::Box::builder()
+        .css_classes(vec!["bar-spacer"])
+        .build();
+    window.set_child(Some(&spacer));
+    window
 }
 
 fn shell_window(app: &gtk4::Application) -> gtk4::ApplicationWindow {
@@ -62,9 +81,6 @@ fn build_right(app: &gtk4::Application) -> gtk4::ApplicationWindow {
     window.set_anchor(Edge::Top, true);
     window.set_margin(Edge::Top, 8);
     window.set_margin(Edge::Right, 12);
-    // Only one pill owns the exclusive zone — this reserves top_margin + pill
-    // height so niri knows to place windows below the floating strip.
-    window.auto_exclusive_zone_enable();
 
     let p = pill(2);
     p.append(&system::build());
