@@ -4,45 +4,74 @@ use gtk4_layer_shell::{Edge, Layer, LayerShell};
 
 use crate::modules::{battery, bluetooth, clock, media, network, power, system, volume, workspaces};
 
-pub fn build_window(app: &gtk4::Application) -> gtk4::ApplicationWindow {
+pub fn build_windows(app: &gtk4::Application) {
     load_css();
+    build_left(app).present();
+    build_center(app).present();
+    build_right(app).present();
+}
 
-    let window = gtk4::ApplicationWindow::builder().application(app).title("Velo Shell").decorated(false).build();
+fn shell_window(app: &gtk4::Application) -> gtk4::ApplicationWindow {
+    let w = gtk4::ApplicationWindow::builder()
+        .application(app)
+        .title("Velo Shell")
+        .decorated(false)
+        .build();
+    w.init_layer_shell();
+    w.set_layer(Layer::Top);
+    w.set_namespace(Some("velo-shell"));
+    w
+}
 
-    window.init_layer_shell();
-    window.set_layer(Layer::Top);
-    window.set_namespace(Some("velo-shell"));
-    for edge in [Edge::Left, Edge::Right, Edge::Top] {
-        window.set_anchor(edge, true);
-    }
-    window.set_anchor(Edge::Bottom, false);
-    window.auto_exclusive_zone_enable();
+fn pill(spacing: i32) -> gtk4::Box {
+    gtk4::Box::builder()
+        .orientation(gtk4::Orientation::Horizontal)
+        .spacing(spacing)
+        .css_classes(vec!["bar-pill"])
+        .build()
+}
 
-    // ── Left: workspaces + active window title ──
-    let left = gtk4::Box::builder().orientation(gtk4::Orientation::Horizontal).spacing(10).halign(gtk4::Align::Start).css_classes(vec!["bar-section"]).build();
-    left.append(&workspaces::build());
+fn build_left(app: &gtk4::Application) -> gtk4::ApplicationWindow {
+    let window = shell_window(app);
+    window.set_anchor(Edge::Left, true);
+    window.set_anchor(Edge::Top, true);
+    window.set_margin(Edge::Top, 8);
+    window.set_margin(Edge::Left, 12);
 
-    // ── Centre: clock ──
-    let center = gtk4::Box::builder().orientation(gtk4::Orientation::Horizontal).halign(gtk4::Align::Center).css_classes(vec!["bar-section"]).build();
-    center.append(&clock::build());
+    let p = pill(0);
+    p.append(&workspaces::build());
+    window.set_child(Some(&p));
+    window
+}
 
-    // ── Right: system stats, network, bluetooth, media, volume, battery, power ──
-    let right = gtk4::Box::builder().orientation(gtk4::Orientation::Horizontal).spacing(10).halign(gtk4::Align::End).css_classes(vec!["bar-section"]).build();
-    right.append(&system::build());
-    right.append(&network::build());
-    right.append(&bluetooth::build());
-    right.append(&media::build());
-    right.append(&volume::build());
-    right.append(&battery::build());
-    right.append(&power::build());
+fn build_center(app: &gtk4::Application) -> gtk4::ApplicationWindow {
+    let window = shell_window(app);
+    // No horizontal anchors → niri centers the surface.
+    window.set_anchor(Edge::Top, true);
+    window.set_margin(Edge::Top, 8);
 
-    let bar = gtk4::CenterBox::builder().css_classes(vec!["bar"]).build();
-    bar.set_start_widget(Some(&left));
-    bar.set_center_widget(Some(&center));
-    bar.set_end_widget(Some(&right));
+    let p = pill(0);
+    p.append(&clock::build());
+    window.set_child(Some(&p));
+    window
+}
 
-    window.set_child(Some(&bar));
+fn build_right(app: &gtk4::Application) -> gtk4::ApplicationWindow {
+    let window = shell_window(app);
+    window.set_anchor(Edge::Right, true);
+    window.set_anchor(Edge::Top, true);
+    window.set_margin(Edge::Top, 8);
+    window.set_margin(Edge::Right, 12);
 
+    let p = pill(2);
+    p.append(&system::build());
+    p.append(&network::build());
+    p.append(&bluetooth::build());
+    p.append(&media::build());
+    p.append(&volume::build());
+    p.append(&battery::build());
+    p.append(&power::build());
+    window.set_child(Some(&p));
     window
 }
 

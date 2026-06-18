@@ -48,14 +48,15 @@ pub fn toggle(window: &gtk4::Window, trigger: &gtk4::Widget, on_open: impl FnOnc
     }
 }
 
-/// Computes the right margin so the card's right edge aligns with the
-/// trigger widget's right edge, making the card appear directly below it.
+/// Sets the card's top and right margins so it appears flush below the pill
+/// window that contains `trigger`, horizontally aligned to `trigger`'s right
+/// edge. Works for left-anchored, right-anchored, and centered pill windows.
 fn position_under(card: &gtk4::Window, trigger: &gtk4::Widget) {
     let Some(native) = trigger.native() else { return };
-    // Bar window spans full width anchored left+right+top, so native coords
-    // equal screen coords directly.
     let Some(pt) = trigger.compute_point(&native, &graphene::Point::zero()) else { return };
     let trigger_right = (pt.x() as i32 + trigger.width()).max(0);
+    // Gap between pill right edge and trigger right edge (in pill coords).
+    let from_right = (native.width() - trigger_right).max(0);
 
     let Some(surface) = native.surface() else { return };
     let screen_width = surface
@@ -64,7 +65,25 @@ fn position_under(card: &gtk4::Window, trigger: &gtk4::Widget) {
         .map(|m| m.geometry().width())
         .unwrap_or(1920);
 
-    card.set_margin(Edge::Right, (screen_width - trigger_right).max(0));
+    if let Some(win) = native.dynamic_cast_ref::<gtk4::Window>() {
+        // Place the card just below the pill's bottom edge.
+        card.set_margin(Edge::Top, (win.margin(Edge::Top) + native.height()).max(0));
+
+        let right_margin = if win.is_anchor(Edge::Right) && !win.is_anchor(Edge::Left) {
+            // Right-only pill: pill right edge = screen_width − pill_right_margin.
+            win.margin(Edge::Right) + from_right
+        } else if !win.is_anchor(Edge::Left) && !win.is_anchor(Edge::Right) {
+            // Centered pill (niri centers surfaces with no horizontal anchors).
+            (screen_width - native.width()) / 2 + from_right
+        } else {
+            // Full-width or left-anchored: native x == screen x.
+            screen_width - trigger_right
+        };
+        card.set_margin(Edge::Right, right_margin.max(0));
+    } else {
+        card.set_margin(Edge::Top, 0);
+        card.set_margin(Edge::Right, (screen_width - trigger_right).max(0));
+    }
 }
 
 /// Maps the window with the `card-enter` (collapsed) state applied, then
