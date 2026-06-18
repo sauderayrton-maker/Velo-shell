@@ -73,7 +73,7 @@ fn run(action: &Action) {
     match action {
         Action::Lock => spawn("loginctl", &["lock-session"]),
         Action::Suspend => spawn("systemctl", &["suspend"]),
-        Action::Logout => hypr::dispatch(&["exit"]),
+        Action::Logout => hypr::action(&["quit"]),
         Action::Reboot => spawn("systemctl", &["reboot"]),
         Action::Shutdown => spawn("systemctl", &["poweroff"]),
     }

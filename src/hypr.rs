@@ -1,50 +1,37 @@
-//! Thin wrapper around Hyprland's IPC: JSON queries via `hyprctl`, dispatches
-//! for actions like switching workspaces, and a live event stream read from
-//! Hyprland's Unix socket.
+//! niri IPC: JSON queries via `niri msg`, action dispatches, and a live
+//! event stream. Replaces the old hyprctl shim — same public surface,
+//! compositor backend swapped to niri.
 
 use std::io::{BufRead, BufReader};
-use std::os::unix::net::UnixStream;
-use std::path::PathBuf;
-use std::process::Command;
+use std::process::{Command, Stdio};
 use std::time::Duration;
 
 use serde::de::DeserializeOwned;
 
-/// Runs `hyprctl -j <args>` and decodes the JSON response.
+/// Run `niri msg -j <args>` and decode the JSON response.
 pub fn query<T: DeserializeOwned>(args: &[&str]) -> Option<T> {
-    let output = Command::new("hyprctl").arg("-j").args(args).output().ok()?;
+    let output = Command::new("niri").arg("msg").arg("-j").args(args).output().ok()?;
     if !output.status.success() {
         return None;
     }
     serde_json::from_slice(&output.stdout).ok()
 }
 
-/// Fires a `hyprctl dispatch <args>` command without waiting for it to finish.
-pub fn dispatch(args: &[&str]) {
-    let _ = Command::new("hyprctl").arg("dispatch").args(args).spawn();
+/// Fire `niri msg action <args>` without waiting for it to finish.
+pub fn action(args: &[&str]) {
+    let _ = Command::new("niri").arg("msg").arg("action").args(args).spawn();
 }
 
-fn event_socket_path() -> Option<PathBuf> {
-    let runtime_dir = std::env::var("XDG_RUNTIME_DIR").ok()?;
-    let signature = std::env::var("HYPRLAND_INSTANCE_SIGNATURE").ok()?;
-    Some(PathBuf::from(runtime_dir).join("hypr").join(signature).join(".socket2.sock"))
-}
-
-/// Connects to Hyprland's event socket and streams one line per event
-/// (`EVENT>>DATA`). Reconnects with a short backoff if the socket isn't
-/// available yet or the connection drops.
+/// Stream niri events as raw JSON strings (one object per line).
+/// Reconnects automatically if niri restarts or the stream drops.
 pub fn subscribe() -> async_channel::Receiver<String> {
     let (tx, rx) = async_channel::unbounded();
 
     std::thread::spawn(move || loop {
-        let Some(path) = event_socket_path() else {
-            std::thread::sleep(Duration::from_secs(2));
-            continue;
-        };
-
-        match UnixStream::connect(&path) {
-            Ok(stream) => {
-                for line in BufReader::new(stream).lines() {
+        match Command::new("niri").arg("msg").arg("event-stream").stdout(Stdio::piped()).spawn() {
+            Ok(mut child) => {
+                let stdout = child.stdout.take().unwrap();
+                for line in BufReader::new(stdout).lines() {
                     match line {
                         Ok(line) => {
                             if tx.send_blocking(line).is_err() {
@@ -54,9 +41,11 @@ pub fn subscribe() -> async_channel::Receiver<String> {
                         Err(_) => break,
                     }
                 }
+                let _ = child.wait();
             }
-            Err(_) => std::thread::sleep(Duration::from_secs(2)),
+            Err(_) => {}
         }
+        std::thread::sleep(Duration::from_secs(1));
     });
 
     rx
