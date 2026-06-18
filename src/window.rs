@@ -14,18 +14,19 @@ pub fn build_windows(app: &gtk4::Application) {
 
 /// Invisible full-width window whose only job is to hold the exclusive zone
 /// so niri keeps all tiled windows below the pill strip.
+/// top_margin(8) + pill_height(38) + gap(8) = 54px reserved from top edge.
 fn build_spacer(app: &gtk4::Application) -> gtk4::ApplicationWindow {
     let window = shell_window(app);
-    window.set_layer(Layer::Bottom);
+    window.set_layer(Layer::Top);
     window.set_anchor(Edge::Left, true);
     window.set_anchor(Edge::Right, true);
     window.set_anchor(Edge::Top, true);
-    window.set_margin(Edge::Top, 8);
-    window.auto_exclusive_zone_enable();
+    window.set_exclusive_zone(54);
 
     let spacer = gtk4::Box::builder()
         .css_classes(vec!["bar-spacer"])
         .build();
+    window.set_default_size(-1, 54);
     window.set_child(Some(&spacer));
     window
 }
@@ -37,7 +38,9 @@ fn shell_window(app: &gtk4::Application) -> gtk4::ApplicationWindow {
         .decorated(false)
         .build();
     w.init_layer_shell();
-    w.set_layer(Layer::Top);
+    // Overlay: positions relative to raw screen geometry, not the usable area
+    // after exclusive zones, so the spacer's zone doesn't push the pills down.
+    w.set_layer(Layer::Overlay);
     w.set_namespace(Some("velo-shell"));
     w
 }
