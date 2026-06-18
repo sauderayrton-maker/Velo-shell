@@ -10,6 +10,8 @@ use crate::hypr;
 struct Workspace {
     id: u64,
     idx: usize,
+    #[serde(default)]
+    name: Option<String>,
     is_focused: bool,
 }
 
@@ -22,8 +24,6 @@ struct Window {
 struct FocusedWindow {
     title: String,
 }
-
-const MIN_WORKSPACES: usize = 9;
 
 pub fn build() -> gtk4::Box {
     let root = gtk4::Box::builder()
@@ -77,29 +77,28 @@ fn refresh(pills: &gtk4::Box, title: &gtk4::Label) {
     let workspaces: Vec<Workspace> = hypr::query(&["workspaces"]).unwrap_or_default();
     let windows: Vec<Window> = hypr::query(&["windows"]).unwrap_or_default();
 
-    let active_idx = workspaces.iter().find(|w| w.is_focused).map(|w| w.idx).unwrap_or(1);
-    let max_idx = workspaces.iter().map(|w| w.idx).max().unwrap_or(0).max(MIN_WORKSPACES);
-
     while let Some(child) = pills.first_child() {
         pills.remove(&child);
     }
 
-    for idx in 1..=max_idx {
-        let is_active = idx == active_idx;
-        let occupied = workspaces
-            .iter()
-            .find(|ws| ws.idx == idx)
-            .is_some_and(|ws| windows.iter().any(|w| w.workspace_id == Some(ws.id)));
+    // Sort by idx so pills always appear in order regardless of niri's reply order.
+    let mut sorted = workspaces;
+    sorted.sort_by_key(|w| w.idx);
+
+    for ws in &sorted {
+        let occupied = windows.iter().any(|w| w.workspace_id == Some(ws.id));
+        let label_text = ws.name.clone().unwrap_or_else(|| ws.idx.to_string());
 
         let button = gtk4::Button::builder().css_classes(vec!["workspace-pill"]).build();
-        button.set_child(Some(&gtk4::Label::new(Some(&idx.to_string()))));
+        button.set_child(Some(&gtk4::Label::new(Some(&label_text))));
 
-        if is_active {
+        if ws.is_focused {
             button.add_css_class("active");
         } else if occupied {
             button.add_css_class("occupied");
         }
 
+        let idx = ws.idx;
         button.connect_clicked(move |_| {
             hypr::action(&["focus-workspace", &idx.to_string()]);
         });

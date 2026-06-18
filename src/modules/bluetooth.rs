@@ -96,13 +96,14 @@ pub fn build() -> gtk4::Box {
 
     let click = gtk4::GestureClick::builder().button(1).build();
     click.connect_pressed({
+        let root = root.clone();
         let power_switch = power_switch.clone();
         let status_label = status_label.clone();
         let list = list.clone();
         let devices = devices.clone();
         let updating = updating.clone();
         move |_, _, _, _| {
-            card::toggle(&card_window, || {
+            card::toggle(&card_window, root.upcast_ref(), || {
                 refresh_card(&power_switch, &status_label, &list, &devices, &updating);
             });
         }

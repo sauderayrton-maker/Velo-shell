@@ -43,11 +43,12 @@ pub fn build() -> gtk4::Box {
 
     let click = gtk4::GestureClick::builder().button(1).build();
     click.connect_pressed({
+        let root = root.clone();
         let title_label = title_label.clone();
         let artist_label = artist_label.clone();
         let play_icon = play_icon.clone();
         move |_, _, _, _| {
-            card::toggle(&card_window, || {
+            card::toggle(&card_window, root.upcast_ref(), || {
                 refresh_card(&title_label, &artist_label, &play_icon);
             });
         }

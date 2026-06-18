@@ -46,9 +46,10 @@ pub fn build() -> gtk4::Box {
 
             let click = gtk4::GestureClick::builder().button(1).build();
             click.connect_pressed({
+                let root = root.clone();
                 let path = path.clone();
                 move |_, _, _, _| {
-                    card::toggle(&card_window, || {
+                    card::toggle(&card_window, root.upcast_ref(), || {
                         update_card(&path, &big_icon, &percent_label, &status_label, &time_label);
                     });
                 }

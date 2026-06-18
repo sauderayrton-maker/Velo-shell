@@ -18,8 +18,8 @@ pub fn build() -> gtk4::Widget {
     let calendar = gtk4::Calendar::builder().css_classes(vec!["velo-calendar"]).build();
     let card_window = card::build(&calendar);
 
-    button.connect_clicked(move |_| {
-        card::toggle(&card_window, || {
+    button.connect_clicked(move |btn| {
+        card::toggle(&card_window, btn.upcast_ref(), || {
             let today = glib::DateTime::now_local().unwrap();
             calendar.select_day(&today);
         });

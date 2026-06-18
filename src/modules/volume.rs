@@ -96,13 +96,14 @@ pub fn build() -> gtk4::Box {
 
     let click = gtk4::GestureClick::builder().button(1).build();
     click.connect_pressed({
+        let root = root.clone();
         let scale = scale.clone();
         let mute_icon = mute_icon.clone();
         let updating = updating.clone();
         let list = list.clone();
         let sinks = sinks.clone();
         move |_, _, _, _| {
-            card::toggle(&card_window, || {
+            card::toggle(&card_window, root.upcast_ref(), || {
                 updating.set(true);
                 scale.set_value(get_volume() as f64);
                 updating.set(false);

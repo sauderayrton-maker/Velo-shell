@@ -13,13 +13,14 @@
 
 use std::time::Duration;
 
+use gtk4::graphene;
 use gtk4::prelude::*;
 use gtk4_layer_shell::{Edge, KeyboardMode, Layer, LayerShell};
 
 const ANIM_MS: u64 = 180;
 
-/// Wraps `content` in a hidden card window anchored to the screen's
-/// top-right corner, flush against the bottom of the bar.
+/// Wraps `content` in a hidden card window anchored to the top-right area of
+/// the screen. The horizontal position is updated at open time by `toggle`.
 pub fn build(content: &impl IsA<gtk4::Widget>) -> gtk4::Window {
     let window = gtk4::Window::builder().decorated(false).resizable(false).css_classes(vec!["velo-card-window"]).build();
     window.set_child(Some(content));
@@ -30,22 +31,40 @@ pub fn build(content: &impl IsA<gtk4::Widget>) -> gtk4::Window {
     window.set_keyboard_mode(KeyboardMode::OnDemand);
     window.set_anchor(Edge::Top, true);
     window.set_anchor(Edge::Right, true);
-    // The bar reserves its own exclusive zone, so a 0 top margin sits the
-    // card flush against its bottom edge.
-    window.set_margin(Edge::Right, 12);
 
     window.set_visible(false);
     window
 }
 
-/// Hides `window` if visible, otherwise runs `on_open` and shows it.
-pub fn toggle(window: &gtk4::Window, on_open: impl FnOnce()) {
+/// Hides `window` if visible, otherwise positions it under `trigger`, runs
+/// `on_open`, and shows it.
+pub fn toggle(window: &gtk4::Window, trigger: &gtk4::Widget, on_open: impl FnOnce()) {
     if window.is_visible() {
         hide_animated(window);
     } else {
+        position_under(window, trigger);
         on_open();
         show_animated(window);
     }
+}
+
+/// Computes the right margin so the card's right edge aligns with the
+/// trigger widget's right edge, making the card appear directly below it.
+fn position_under(card: &gtk4::Window, trigger: &gtk4::Widget) {
+    let Some(native) = trigger.native() else { return };
+    // Bar window spans full width anchored left+right+top, so native coords
+    // equal screen coords directly.
+    let Some(pt) = trigger.compute_point(&native, &graphene::Point::zero()) else { return };
+    let trigger_right = (pt.x() as i32 + trigger.width()).max(0);
+
+    let Some(surface) = native.surface() else { return };
+    let screen_width = surface
+        .display()
+        .monitor_at_surface(&surface)
+        .map(|m| m.geometry().width())
+        .unwrap_or(1920);
+
+    card.set_margin(Edge::Right, (screen_width - trigger_right).max(0));
 }
 
 /// Maps the window with the `card-enter` (collapsed) state applied, then

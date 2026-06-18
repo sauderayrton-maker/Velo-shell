@@ -45,7 +45,7 @@ pub fn build() -> gtk4::Button {
         }
     });
 
-    button.connect_clicked(move |_| card::toggle(&card_window, || {}));
+    button.connect_clicked(move |btn| card::toggle(&card_window, btn.upcast_ref(), || {}));
 
     button
 }
