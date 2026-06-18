@@ -62,6 +62,9 @@ fn build_right(app: &gtk4::Application) -> gtk4::ApplicationWindow {
     window.set_anchor(Edge::Top, true);
     window.set_margin(Edge::Top, 8);
     window.set_margin(Edge::Right, 12);
+    // Only one pill owns the exclusive zone — this reserves top_margin + pill
+    // height so niri knows to place windows below the floating strip.
+    window.auto_exclusive_zone_enable();
 
     let p = pill(2);
     p.append(&system::build());
