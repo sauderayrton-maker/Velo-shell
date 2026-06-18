@@ -38,10 +38,11 @@ fn shell_window(app: &gtk4::Application) -> gtk4::ApplicationWindow {
         .decorated(false)
         .build();
     w.init_layer_shell();
-    // Overlay: positions relative to raw screen geometry, not the usable area
-    // after exclusive zones, so the spacer's zone doesn't push the pills down.
-    w.set_layer(Layer::Overlay);
+    w.set_layer(Layer::Top);
     w.set_namespace(Some("velo-shell"));
+    // -1 = "don't apply other surfaces' exclusive zones to me" — pills stay
+    // anchored to raw screen coordinates regardless of the spacer's zone.
+    w.set_exclusive_zone(-1);
     w
 }
 
