@@ -19,24 +19,25 @@ window.background {
     background-color: transparent;
 }
 
-/* ── Floating pill — each section is its own rounded surface ─────────────── */
+/* ── Floating pill — each section is its own machined glass surface ─────── */
 .bar-pill {
     min-height: 38px;
     padding: 2px 6px;
-    border-radius: 12px;
-    background-color: rgba(7, 8, 13, 0.88);
-    border: 1px solid rgba(195, 215, 240, 0.09);
+    border-radius: 14px;
+    background-color: rgba(7, 8, 13, 0.90);
+    border: 1px solid rgba(195, 215, 240, 0.10);
     box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.05),
-        0 4px 20px rgba(0, 0, 0, 0.55),
-        0 1px 4px rgba(0, 0, 0, 0.30);
+        inset 0 1px 0 rgba(255, 255, 255, 0.06),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.45),
+        0 6px 24px rgba(0, 0, 0, 0.55),
+        0 1px 3px rgba(0, 0, 0, 0.40);
 }
 
 /* ── Generic module pill ─────────────────────────────────────────────────── */
 .module {
     padding: 6px 12px;
-    border-radius: 9px;
-    transition: background-color 140ms ease, color 140ms ease;
+    border-radius: 10px;
+    transition: background-color 110ms ease, color 110ms ease;
 }
 .module:hover {
     background-color: rgba(195, 215, 240, 0.06);
@@ -55,7 +56,7 @@ window.background {
 button.flat {
     border-radius: 8px;
     color: rgba(196, 216, 240, 0.50);
-    transition: background-color 140ms ease, color 140ms ease;
+    transition: background-color 110ms ease, color 110ms ease;
 }
 button.flat:hover {
     background-color: rgba(138, 180, 212, 0.12);
@@ -66,34 +67,67 @@ button.flat:active {
     color: #ffffff;
 }
 
-/* ── Workspaces ───────────────────────────────────────────────────────────── */
+/* ── Desktops — niri's dynamic workspaces as a morphing instrument row ──── */
 .workspaces {
-    padding: 0 2px;
+    padding: 0 4px;
 }
 
 button.workspace-pill {
-    min-width: 26px;
-    min-height: 26px;
-    padding: 0 2px;
-    border-radius: 7px;
+    min-width: 24px;
+    min-height: 22px;
+    margin: 0 3px;
+    padding: 0 5px;
+    border-radius: 999px;
     font-size: 12px;
     font-weight: 600;
-    color: rgba(165, 190, 218, 0.30);
-    transition: background-color 140ms ease, color 140ms ease, box-shadow 140ms ease;
+    color: rgba(165, 190, 218, 0.55);
+    background-color: rgba(195, 215, 240, 0.05);
+    transition:
+        min-width 220ms cubic-bezier(0.32, 0.72, 0.33, 1),
+        background-color 120ms ease,
+        color 120ms ease,
+        box-shadow 180ms ease;
 }
 button.workspace-pill:hover {
-    background-color: rgba(195, 215, 240, 0.08);
-    color: rgba(228, 242, 255, 0.85);
+    background-color: rgba(195, 215, 240, 0.11);
+    color: rgba(228, 242, 255, 0.90);
 }
+
+/* Empty desktop — collapses to a faint cockpit dot */
+button.workspace-pill.empty {
+    min-width: 8px;
+    padding: 0;
+    background-color: rgba(165, 190, 218, 0.13);
+}
+button.workspace-pill.empty:hover {
+    background-color: rgba(195, 215, 240, 0.24);
+}
+
+/* Occupied desktop — a solid, legible pill */
 button.workspace-pill.occupied {
-    color: rgba(222, 234, 252, 0.65);
+    color: rgba(228, 240, 255, 0.78);
+    background-color: rgba(195, 215, 240, 0.08);
 }
+
+/* Active desktop — accent capsule that grows in with a cockpit glow */
 button.workspace-pill.active {
-    background-color: rgba(138, 180, 212, 0.20);
+    min-width: 34px;
     color: #ffffff;
+    background-image: linear-gradient(
+        rgba(138, 180, 212, 0.32),
+        rgba(138, 180, 212, 0.18));
     box-shadow:
-        inset 0 0 0 1px rgba(138, 180, 212, 0.35),
-        0 0 12px rgba(138, 180, 212, 0.18);
+        inset 0 0 0 1px rgba(138, 180, 212, 0.45),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12),
+        0 0 14px rgba(138, 180, 212, 0.26);
+}
+
+/* Active *and* focused (the desktop you're actually on) reads brightest */
+button.workspace-pill.active.focused {
+    box-shadow:
+        inset 0 0 0 1px rgba(138, 180, 212, 0.60),
+        inset 0 1px 0 rgba(255, 255, 255, 0.16),
+        0 0 18px rgba(138, 180, 212, 0.38);
 }
 
 /* ── Active window title ─────────────────────────────────────────────────── */
@@ -150,15 +184,16 @@ button.power-button:hover {
     color: rgba(240, 135, 135, 0.85);
 }
 
-/* ── Cards — float below their pill, fully rounded ───────────────────────── */
+/* ── Cards — drawers that slide out of the bar, machined glass ──────────── */
 window.velo-card-window {
     background-color: rgba(10, 11, 17, 0.97);
-    border: 1px solid rgba(195, 215, 240, 0.10);
-    border-radius: 12px;
+    border: 1px solid rgba(195, 215, 240, 0.11);
+    border-radius: 14px;
     box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.04),
-        0 12px 40px rgba(0, 0, 0, 0.55),
-        0 0 18px rgba(138, 180, 212, 0.08);
+        inset 0 1px 0 rgba(255, 255, 255, 0.05),
+        inset 0 0 0 1px rgba(8, 10, 16, 0.50),
+        0 14px 44px rgba(0, 0, 0, 0.58),
+        0 0 22px rgba(138, 180, 212, 0.10);
     opacity: 1;
     transition: opacity 180ms cubic-bezier(0.32, 0.72, 0.33, 1);
 }
