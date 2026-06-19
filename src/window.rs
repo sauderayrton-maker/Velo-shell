@@ -61,8 +61,9 @@ fn build_left(app: &gtk4::Application) -> gtk4::ApplicationWindow {
     window.set_margin(Edge::Top, 8);
     window.set_margin(Edge::Left, 12);
 
-    let p = pill(0);
+    let p = pill(4);
     p.append(&workspaces::build());
+    p.append(&media::build());
     window.set_child(Some(&p));
     window
 }
@@ -90,7 +91,6 @@ fn build_right(app: &gtk4::Application) -> gtk4::ApplicationWindow {
     p.append(&system::build());
     p.append(&network::build());
     p.append(&bluetooth::build());
-    p.append(&media::build());
     p.append(&volume::build());
     p.append(&battery::build());
     p.append(&power::build());
