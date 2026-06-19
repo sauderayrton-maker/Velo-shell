@@ -1,19 +1,24 @@
-/* Velo Shell — Lexus Cockpit / Hyprland Glass */
+/* ════════════════════════════════════════════════════════════════════════
+   Velo Shell — cockpit instrument cluster
+   Deep machined glass · #8ab4d4 ambient accent · niri
+   ════════════════════════════════════════════════════════════════════════ */
 
 /* ── Adwaita tokens (matches Velo Browser / Player / Files / Launcher) ──── */
-@define-color accent_color          #8ab4d4;
-@define-color accent_bg_color       #4d8fb8;
-@define-color accent_fg_color       #ffffff;
-@define-color window_bg_color       #09090c;
-@define-color view_bg_color         #06060a;
+@define-color accent_color    #8ab4d4;
+@define-color accent_bg_color #4d8fb8;
+@define-color accent_fg_color #ffffff;
+@define-color window_bg_color #09090c;
+@define-color view_bg_color   #06060a;
 
-/* ── Window — fully transparent so only the bar panel shows ─────────────── */
+/* ── Window — transparent so only the panels read ───────────────────────── */
 window,
 window.background {
     background-color: transparent;
+    color: rgba(228, 240, 252, 0.85);
+    font-family: "Inter", "SF Pro Display", "Cantarell", sans-serif;
 }
 
-/* ── Spacer — invisible full-width zone holder, not rendered ─────────────── */
+/* ── Spacer — invisible exclusive-zone holder ───────────────────────────── */
 .bar-spacer {
     min-height: 38px;
     background-color: transparent;
@@ -23,51 +28,60 @@ window.background {
 .bar-pill {
     min-height: 38px;
     padding: 2px 6px;
-    border-radius: 14px;
-    background-color: rgba(7, 8, 13, 0.90);
-    border: 1px solid rgba(195, 215, 240, 0.10);
+    border-radius: 15px;
+    background-image: linear-gradient(
+        rgba(18, 21, 28, 0.92),
+        rgba(7, 8, 13, 0.94));
+    border: 1px solid rgba(195, 215, 240, 0.09);
     box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.06),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.45),
-        0 6px 24px rgba(0, 0, 0, 0.55),
-        0 1px 3px rgba(0, 0, 0, 0.40);
+        inset 0 1px 0 rgba(174, 206, 236, 0.10),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.50),
+        0 8px 28px rgba(0, 0, 0, 0.55),
+        0 1px 3px rgba(0, 0, 0, 0.45);
 }
 
-/* ── Generic module pill ─────────────────────────────────────────────────── */
+/* ── Generic module ─────────────────────────────────────────────────────── */
 .module {
     padding: 6px 12px;
     border-radius: 10px;
-    transition: background-color 110ms ease, color 110ms ease;
+    transition: background-color 110ms ease, box-shadow 110ms ease;
 }
 .module:hover {
-    background-color: rgba(195, 215, 240, 0.06);
+    background-color: rgba(174, 206, 236, 0.06);
 }
 
 .module-icon {
-    color: rgba(165, 190, 218, 0.55);
+    color: rgba(150, 182, 214, 0.60);
+    transition: color 110ms ease;
+}
+.module:hover .module-icon {
+    color: rgba(190, 216, 244, 0.85);
 }
 .module-value {
     font-size: 13px;
-    color: rgba(222, 234, 252, 0.82);
+    color: rgba(222, 234, 252, 0.84);
     font-variant-numeric: tabular-nums;
+    letter-spacing: 0.2px;
 }
 
-/* ── Buttons — flat, accent-tinted on hover (shared with the suite) ─────── */
+/* ── Flat buttons — accent-tinted, shared with the suite ─────────────────── */
 button.flat {
-    border-radius: 8px;
-    color: rgba(196, 216, 240, 0.50);
+    border-radius: 9px;
+    color: rgba(190, 214, 240, 0.55);
     transition: background-color 110ms ease, color 110ms ease;
 }
 button.flat:hover {
-    background-color: rgba(138, 180, 212, 0.12);
-    color: rgba(228, 242, 255, 0.92);
+    background-color: rgba(138, 180, 212, 0.13);
+    color: rgba(232, 244, 255, 0.95);
 }
 button.flat:active {
-    background-color: rgba(138, 180, 212, 0.20);
+    background-color: rgba(138, 180, 212, 0.22);
     color: #ffffff;
 }
 
-/* ── Desktops — niri's dynamic workspaces as a morphing instrument row ──── */
+/* ════════════════════════════════════════════════════════════════════════
+   Desktops — niri's dynamic workspaces as a morphing instrument row
+   ════════════════════════════════════════════════════════════════════════ */
 .workspaces {
     padding: 0 4px;
 }
@@ -80,33 +94,33 @@ button.workspace-pill {
     border-radius: 999px;
     font-size: 12px;
     font-weight: 600;
-    color: rgba(165, 190, 218, 0.55);
-    background-color: rgba(195, 215, 240, 0.05);
+    color: rgba(150, 182, 214, 0.55);
+    background-color: rgba(174, 206, 236, 0.05);
     transition:
-        min-width 220ms cubic-bezier(0.32, 0.72, 0.33, 1),
-        background-color 120ms ease,
-        color 120ms ease,
-        box-shadow 180ms ease;
+        min-width 240ms cubic-bezier(0.32, 0.72, 0.33, 1),
+        background-color 130ms ease,
+        color 130ms ease,
+        box-shadow 200ms ease;
 }
 button.workspace-pill:hover {
-    background-color: rgba(195, 215, 240, 0.11);
-    color: rgba(228, 242, 255, 0.90);
+    background-color: rgba(174, 206, 236, 0.12);
+    color: rgba(228, 242, 255, 0.92);
 }
 
 /* Empty desktop — collapses to a faint cockpit dot */
 button.workspace-pill.empty {
     min-width: 8px;
     padding: 0;
-    background-color: rgba(165, 190, 218, 0.13);
+    background-color: rgba(150, 182, 214, 0.14);
 }
 button.workspace-pill.empty:hover {
-    background-color: rgba(195, 215, 240, 0.24);
+    background-color: rgba(190, 216, 244, 0.26);
 }
 
 /* Occupied desktop — a solid, legible pill */
 button.workspace-pill.occupied {
-    color: rgba(228, 240, 255, 0.78);
-    background-color: rgba(195, 215, 240, 0.08);
+    color: rgba(226, 238, 254, 0.80);
+    background-color: rgba(174, 206, 236, 0.09);
 }
 
 /* Active desktop — accent capsule that grows in with a cockpit glow */
@@ -114,86 +128,93 @@ button.workspace-pill.active {
     min-width: 34px;
     color: #ffffff;
     background-image: linear-gradient(
-        rgba(138, 180, 212, 0.32),
+        rgba(150, 190, 222, 0.34),
         rgba(138, 180, 212, 0.18));
     box-shadow:
         inset 0 0 0 1px rgba(138, 180, 212, 0.45),
-        inset 0 1px 0 rgba(255, 255, 255, 0.12),
-        0 0 14px rgba(138, 180, 212, 0.26);
+        inset 0 1px 0 rgba(255, 255, 255, 0.14),
+        0 0 14px rgba(138, 180, 212, 0.24);
 }
-
-/* Active *and* focused (the desktop you're actually on) reads brightest */
+/* The desktop you're actually on reads brightest */
 button.workspace-pill.active.focused {
     box-shadow:
-        inset 0 0 0 1px rgba(138, 180, 212, 0.60),
-        inset 0 1px 0 rgba(255, 255, 255, 0.16),
-        0 0 18px rgba(138, 180, 212, 0.38);
+        inset 0 0 0 1px rgba(150, 190, 222, 0.65),
+        inset 0 1px 0 rgba(255, 255, 255, 0.18),
+        0 0 20px rgba(138, 180, 212, 0.40);
 }
 
 /* ── Active window title ─────────────────────────────────────────────────── */
 label.window-title {
     font-size: 13px;
     font-weight: 450;
-    color: rgba(196, 216, 240, 0.46);
+    color: rgba(190, 214, 240, 0.48);
+    letter-spacing: 0.2px;
 }
 
-/* ── Clock ────────────────────────────────────────────────────────────────── */
+/* ════════════════════════════════════════════════════════════════════════
+   Clock — the centre gauge
+   ════════════════════════════════════════════════════════════════════════ */
 button.clock-module {
-    padding: 6px 16px;
+    padding: 6px 18px;
 }
 label.clock-time {
     font-size: 15px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    color: rgba(232, 240, 252, 0.94);
+    font-weight: 650;
+    letter-spacing: 0.6px;
+    color: rgba(234, 242, 254, 0.96);
     font-variant-numeric: tabular-nums;
 }
 label.clock-date {
     font-size: 12.5px;
-    color: rgba(165, 190, 218, 0.45);
+    color: rgba(150, 182, 214, 0.50);
+    letter-spacing: 0.3px;
 }
 
-/* ── CPU / RAM ────────────────────────────────────────────────────────────── */
+/* ── CPU / RAM gauges ─────────────────────────────────────────────────────── */
 label.stat-name {
-    font-size: 10px;
-    font-weight: 600;
+    font-size: 9.5px;
+    font-weight: 700;
     letter-spacing: 2px;
-    color: rgba(150, 175, 205, 0.36);
+    color: rgba(138, 166, 198, 0.40);
 }
 label.stat-value {
     font-size: 13px;
-    font-weight: 500;
+    font-weight: 550;
     min-width: 30px;
-    color: rgba(222, 234, 252, 0.82);
+    color: rgba(222, 234, 252, 0.84);
     font-variant-numeric: tabular-nums;
 }
 
-/* ── Battery — accent flips to a warm red when low ───────────────────────── */
+/* ── Battery — warns warm-red when low ──────────────────────────────────── */
 .battery-module.battery-low .module-icon,
 .battery-module.battery-low .module-value {
-    color: rgba(224, 110, 110, 0.85);
+    color: rgba(228, 116, 116, 0.90);
 }
 
 /* ── Power button ────────────────────────────────────────────────────────── */
 button.power-button {
     padding: 4px 8px;
-    color: rgba(196, 216, 240, 0.50);
+    color: rgba(190, 214, 240, 0.55);
 }
 button.power-button:hover {
-    background-color: rgba(224, 110, 110, 0.14);
-    color: rgba(240, 135, 135, 0.85);
+    background-color: rgba(224, 110, 110, 0.15);
+    color: rgba(242, 140, 140, 0.92);
 }
 
-/* ── Cards — drawers that slide out of the bar, machined glass ──────────── */
+/* ════════════════════════════════════════════════════════════════════════
+   Cards — drawers of machined glass that slide out of the bar
+   ════════════════════════════════════════════════════════════════════════ */
 window.velo-card-window {
-    background-color: rgba(10, 11, 17, 0.97);
+    background-image: linear-gradient(
+        rgba(16, 19, 26, 0.97),
+        rgba(9, 10, 16, 0.98));
     border: 1px solid rgba(195, 215, 240, 0.11);
-    border-radius: 14px;
+    border-radius: 16px;
     box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.05),
-        inset 0 0 0 1px rgba(8, 10, 16, 0.50),
-        0 14px 44px rgba(0, 0, 0, 0.58),
-        0 0 22px rgba(138, 180, 212, 0.10);
+        inset 0 1px 0 rgba(174, 206, 236, 0.10),
+        inset 0 0 0 1px rgba(8, 10, 16, 0.45),
+        0 16px 48px rgba(0, 0, 0, 0.60),
+        0 0 26px rgba(138, 180, 212, 0.10);
     opacity: 1;
     transition: opacity 180ms cubic-bezier(0.32, 0.72, 0.33, 1);
 }
@@ -201,14 +222,7 @@ window.velo-card-window.card-enter {
     opacity: 0;
 }
 
-.panel-title {
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 3.5px;
-    color: rgba(185, 210, 235, 0.36);
-}
-
-/* ── Cards — shared enter/exit motion for every card's direct child ──────── */
+/* Shared enter/exit motion for each card's content */
 .card,
 calendar.velo-calendar,
 .power-menu-list {
@@ -216,82 +230,98 @@ calendar.velo-calendar,
     transform: translateY(0);
     transition:
         opacity 180ms cubic-bezier(0.32, 0.72, 0.33, 1),
-        transform 220ms cubic-bezier(0.32, 1.5, 0.33, 1);
+        transform 240ms cubic-bezier(0.32, 1.5, 0.33, 1);
 }
 .card.card-enter,
 calendar.velo-calendar.card-enter,
 .power-menu-list.card-enter {
     opacity: 0;
-    transform: translateY(-6px);
+    transform: translateY(-8px);
 }
 
-/* ── Cards — generic card content (network, bluetooth, sound, media) ─────── */
-.card {
-    padding: 10px;
-    min-width: 230px;
+/* Section eyebrow labels */
+.panel-title {
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 3.5px;
+    color: rgba(174, 200, 230, 0.40);
 }
-
 .card-section-title {
-    margin-top: 4px;
+    margin-top: 6px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(195, 215, 240, 0.07);
 }
 
+/* Generic card content */
+.card {
+    padding: 14px;
+    min-width: 248px;
+}
 .card-subtitle {
     font-size: 12px;
-    color: rgba(196, 216, 240, 0.46);
+    color: rgba(190, 214, 240, 0.50);
+    letter-spacing: 0.2px;
 }
-
 .card-icon-button {
     padding: 6px;
-    border-radius: 8px;
+    border-radius: 9px;
 }
 
-/* Switches — Wi-Fi / Bluetooth power toggles */
+/* ── Switches — Wi-Fi / Bluetooth power ─────────────────────────────────── */
 switch {
-    min-width: 36px;
-    min-height: 20px;
+    min-width: 38px;
+    min-height: 21px;
     border-radius: 999px;
-    background-color: rgba(195, 215, 240, 0.10);
+    background-color: rgba(174, 206, 236, 0.10);
     border: 1px solid rgba(195, 215, 240, 0.10);
-    transition: background-color 140ms ease;
+    transition: background-color 140ms ease, box-shadow 140ms ease;
 }
 switch:checked {
-    background-color: rgba(138, 180, 212, 0.45);
+    background-image: linear-gradient(
+        rgba(150, 190, 222, 0.55),
+        rgba(138, 180, 212, 0.42));
+    border-color: rgba(138, 180, 212, 0.30);
+    box-shadow: 0 0 12px rgba(138, 180, 212, 0.30);
 }
 switch slider {
-    min-width: 16px;
-    min-height: 16px;
+    min-width: 17px;
+    min-height: 17px;
     margin: 1px;
     border-radius: 999px;
-    background-color: rgba(225, 235, 250, 0.85);
+    background-color: rgba(228, 238, 252, 0.88);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.40);
 }
 switch:checked slider {
     background-color: #ffffff;
 }
 
-/* Scrollable lists — Wi-Fi networks, Bluetooth devices, audio outputs */
+/* ── Scrollable lists — networks, devices, outputs ──────────────────────── */
 .card-list {
     background-color: transparent;
 }
 .card-list > row {
-    border-radius: 8px;
-    transition: background-color 100ms ease;
+    border-radius: 10px;
+    transition: background-color 110ms ease;
 }
 .card-list > row:hover {
-    background-color: rgba(195, 215, 240, 0.07);
+    background-color: rgba(174, 206, 236, 0.08);
 }
 .card-list > row.active {
-    background-color: rgba(138, 180, 212, 0.14);
+    background-image: linear-gradient(
+        rgba(138, 180, 212, 0.18),
+        rgba(138, 180, 212, 0.10));
+    box-shadow: inset 0 0 0 1px rgba(138, 180, 212, 0.22);
 }
 .card-list-content {
-    padding: 6px 8px;
+    padding: 8px 9px;
 }
 .card-list-icon {
-    color: rgba(196, 216, 240, 0.55);
+    color: rgba(190, 214, 240, 0.58);
 }
 .card-list-title {
     font-size: 12.5px;
     font-weight: 450;
-    color: rgba(228, 238, 252, 0.85);
+    color: rgba(228, 238, 252, 0.86);
 }
 .card-list > row.active .card-list-title {
     color: #ffffff;
@@ -300,126 +330,133 @@ switch:checked slider {
     color: @accent_color;
 }
 
-/* ── Media card ───────────────────────────────────────────────────────────── */
+/* ── Media card ──────────────────────────────────────────────────────────── */
 .media-track-title {
-    font-size: 13px;
-    font-weight: 600;
-    color: rgba(232, 240, 252, 0.92);
-    margin-top: 2px;
+    font-size: 13.5px;
+    font-weight: 650;
+    color: rgba(234, 242, 254, 0.94);
+    margin-top: 4px;
 }
 .media-track-artist {
     font-size: 12px;
-    color: rgba(165, 190, 218, 0.50);
+    color: rgba(150, 182, 214, 0.55);
 }
 .media-controls {
-    margin-top: 6px;
+    margin-top: 8px;
 }
 button.media-btn {
-    padding: 8px;
+    padding: 9px;
     border-radius: 999px;
 }
 
-/* ── Battery card ─────────────────────────────────────────────────────────── */
+/* ── Battery card ────────────────────────────────────────────────────────── */
 .battery-card-icon {
-    color: rgba(165, 190, 218, 0.65);
+    color: rgba(150, 182, 214, 0.68);
 }
 .battery-card-percent {
-    font-size: 22px;
-    font-weight: 700;
-    color: rgba(232, 240, 252, 0.94);
+    font-size: 23px;
+    font-weight: 750;
+    color: rgba(234, 242, 254, 0.96);
     font-variant-numeric: tabular-nums;
 }
 .battery-card-status {
     font-size: 12px;
-    color: rgba(165, 190, 218, 0.50);
+    color: rgba(150, 182, 214, 0.55);
 }
 .battery-card-time {
     font-size: 12px;
-    color: rgba(196, 216, 240, 0.46);
-    padding-top: 6px;
+    color: rgba(190, 214, 240, 0.50);
+    padding-top: 8px;
     border-top: 1px solid rgba(195, 215, 240, 0.07);
 }
 
-/* ── Volume popover slider ───────────────────────────────────────────────── */
+/* ── Volume slider ───────────────────────────────────────────────────────── */
 .volume-popover-box {
     padding: 4px 6px;
     min-width: 180px;
 }
 scale.volume-scale trough {
-    min-height: 4px;
-    border-radius: 2px;
-    background-color: rgba(195, 215, 240, 0.10);
+    min-height: 5px;
+    border-radius: 3px;
+    background-color: rgba(174, 206, 236, 0.10);
 }
 scale.volume-scale highlight {
-    border-radius: 2px;
-    background-color: rgba(138, 180, 212, 0.45);
+    border-radius: 3px;
+    background-image: linear-gradient(
+        to right,
+        rgba(138, 180, 212, 0.55),
+        rgba(150, 190, 222, 0.70));
 }
 scale.volume-scale slider {
-    min-width: 10px;
-    min-height: 10px;
-    margin: -4px;
+    min-width: 12px;
+    min-height: 12px;
+    margin: -5px;
     border-radius: 50%;
-    background-color: rgba(225, 235, 250, 0.85);
+    background-color: rgba(232, 240, 254, 0.92);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
 }
 
-/* ── Calendar popover ─────────────────────────────────────────────────────── */
+/* ── Calendar ────────────────────────────────────────────────────────────── */
 calendar.velo-calendar {
     background-color: transparent;
     color: rgba(222, 234, 252, 0.85);
-    padding: 8px;
+    padding: 10px;
 }
 calendar.velo-calendar > header {
     background: transparent;
     border-bottom: 1px solid rgba(195, 215, 240, 0.07);
-    padding-bottom: 4px;
-    margin-bottom: 4px;
+    padding-bottom: 6px;
+    margin-bottom: 6px;
 }
 calendar.velo-calendar > header > button {
-    color: rgba(196, 216, 240, 0.55);
-    border-radius: 6px;
+    color: rgba(190, 214, 240, 0.58);
+    border-radius: 7px;
 }
 calendar.velo-calendar > header > button:hover {
-    background-color: rgba(138, 180, 212, 0.12);
+    background-color: rgba(138, 180, 212, 0.13);
     color: #ffffff;
 }
 calendar.velo-calendar label.day-number {
-    border-radius: 6px;
-    padding: 2px;
-    color: rgba(222, 234, 252, 0.75);
+    border-radius: 8px;
+    padding: 3px;
+    color: rgba(222, 234, 252, 0.78);
 }
 calendar.velo-calendar label.day-number.other-month {
-    color: rgba(165, 190, 218, 0.20);
+    color: rgba(150, 182, 214, 0.22);
 }
 calendar.velo-calendar label.day-number.today {
     color: @accent_color;
-    font-weight: 700;
+    font-weight: 750;
 }
 calendar.velo-calendar label.day-number:selected {
-    background-color: rgba(138, 180, 212, 0.30);
+    background-image: linear-gradient(
+        rgba(150, 190, 222, 0.40),
+        rgba(138, 180, 212, 0.28));
     color: #ffffff;
+    box-shadow: inset 0 0 0 1px rgba(138, 180, 212, 0.35);
 }
 
-/* ── Power menu ───────────────────────────────────────────────────────────── */
+/* ── Power menu ──────────────────────────────────────────────────────────── */
 .power-menu-list {
     background-color: transparent;
-    min-width: 150px;
-    padding: 8px;
+    min-width: 162px;
+    padding: 6px;
 }
 .power-menu-list > row {
-    border-radius: 8px;
-    transition: background-color 100ms ease;
+    border-radius: 10px;
+    transition: background-color 110ms ease;
 }
 .power-menu-list > row:hover {
-    background-color: rgba(195, 215, 240, 0.07);
+    background-color: rgba(174, 206, 236, 0.08);
 }
 .power-menu-list > row.danger:hover {
-    background-color: rgba(220, 75, 75, 0.14);
+    background-color: rgba(222, 80, 80, 0.15);
 }
 .power-menu-row {
-    padding: 6px 12px;
+    padding: 8px 12px;
 }
 .power-menu-icon {
-    color: rgba(196, 216, 240, 0.65);
+    color: rgba(190, 214, 240, 0.65);
 }
 .power-menu-title {
     font-size: 12.5px;
@@ -432,19 +469,19 @@ calendar.velo-calendar label.day-number:selected {
 }
 .power-menu-list > row.danger:hover .power-menu-icon,
 .power-menu-list > row.danger:hover .power-menu-title {
-    color: rgba(240, 135, 135, 0.90);
+    color: rgba(242, 140, 140, 0.92);
 }
 
-/* ── Scrollbars — accent-tinted to match the cockpit palette ────────────── */
+/* ── Scrollbars — accent-tinted ─────────────────────────────────────────── */
 scrollbar slider {
     background-color: rgba(138, 180, 212, 0.18);
-    border-radius: 8px;
+    border-radius: 999px;
     min-width: 6px;
     min-height: 6px;
 }
 scrollbar slider:hover {
-    background-color: rgba(138, 180, 212, 0.32);
+    background-color: rgba(138, 180, 212, 0.34);
 }
 scrollbar slider:active {
-    background-color: rgba(138, 180, 212, 0.48);
+    background-color: rgba(138, 180, 212, 0.50);
 }
